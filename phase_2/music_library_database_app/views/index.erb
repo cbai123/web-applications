@@ -1,0 +1,21 @@
+<html>
+  <head></head>
+  <body>
+  <% if @album_id %>
+    <h1><%= @title %></h1>
+    <p>
+      Release year: <%= @release_year%>
+      Artist: <%= @artist%>
+    </p>
+  <% else %>
+    <h1>Albums</h1>
+    <%@albums.each do |album|%>
+    <div>
+      Title: <%= album.title%>
+      Released: <%= album.release_year%>
+      <a href='/albums/<%= album.id%>'>Album page</a>
+    </div>
+    <% end %>
+  <% end %>
+  </body>
+</html>
