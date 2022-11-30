@@ -1,4 +1,4 @@
-# {{ get }} {{ /artists}} Route Design Recipe
+# {{ METHOD }} {{ PATH}} Route Design Recipe
 
 _Copy this design recipe template to test-drive a Sinatra route._
 
@@ -10,8 +10,9 @@ You'll need to include:
   * any query parameters (passed in the URL)
   * or body parameters (passed in the request body)
 
-  Method: GET
-  path: /artists
+  method: GET
+  path: /albums
+  query parameters: /:id
 
 ## 2. Design the Response
 
@@ -27,7 +28,16 @@ _Replace the below with your own design. Think of all the different possible res
 <!-- EXAMPLE -->
 <!-- Response when the post is found: 200 OK -->
 
-return list of artists
+<html>
+  <head></head>
+  <body>
+    <h1>Artist</h1>
+    <p>
+      Name: <%= @artist.name>
+      Genre: <% @artist.genre>
+    </p>
+  </body>
+</html>
 ```
 
 ## 3. Write Examples
@@ -37,12 +47,14 @@ _Replace these with your own design._
 ```
 # Request:
 
-GET /artists
+GET /albums/2
 
 # Expected response:
 
 Response for 200 OK
-return list of artists
+
+Artist:
+Name: ABBA Genre: Pop
 ```
 
 ## 4. Encode as Tests Examples
@@ -58,14 +70,23 @@ describe Application do
 
   let(:app) { Application.new }
 
-  context "GET /" do
+  context "GET /artists/id" do
     it 'returns 200 OK' do
       # Assuming the post with id 1 exists.
-      response = get('/artists')
-      expected_response = 'Pixies, ABBA, Taylor Swift, Nina Simone, Kiasmos'
+      response = get('/artists/2')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq(expected_response)
+      expect(response.body).to include('<h1>Artist</h1>')
+      expect(response.body).to include('Name: ABBA')
+      expect(response.body).to include('Genre: Pop')
+    end
+
+    it 'returns 200 OK' do
+      response = get('artists/4')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('Name: Nina Simone')
+      expect(response.body).to include('Genre: Pop')
     end
   end
 end

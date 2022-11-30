@@ -1,0 +1,19 @@
+<html>
+  <head></head>
+  <body>
+  <%if @artist_id%>
+    <h1><%= @artist.name%></h1>
+    <p>
+      Genre: <%= @artist.genre%>
+    </p>
+  <% else %>
+    <h1>Artists:</h1>
+    <%@artists.each do |artist|%>
+      <div>
+      Name: <%= artist.name%>
+      <a href='/artists/<%= artist.id%>'>Artist Page</a>
+      </div>
+    <%end%>
+  <% end %>
+  </body>
+</html>

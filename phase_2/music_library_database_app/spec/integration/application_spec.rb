@@ -25,44 +25,34 @@ describe Application do
     end
   end
 
-  # context "GET /albums/id" do
-  #   it 'returns 200 OK' do
-  #     response = get('/albums/2')
+  context "POST /albums" do
+    it 'returns 200 OK' do
+      # Assuming the post with id 1 exists.
+      response = post('/albums', title: "Voyage", release_year: 2022, artist_id: 2)
 
-  #     expected_response = "Surfer Rosa"
+      expect(response.status).to eq(200)
 
-  #     expect(response.status).to eq(200)
-  #     expect(response.body).to eq(expected_response)
-  #   end
-  # end
-
-  # context "POST /albums" do
-  #   it 'returns 200 OK' do
-  #     # Assuming the post with id 1 exists.
-  #     response = post('/albums', title: "Voyage", release_year: 2022, artist_id: 2)
-
-  #     expect(response.status).to eq(200)
-
-  #     response = get('/albums/13')
-  #     expect(response.status).to eq(200)
-  #     expect(response.body).to eq("Voyage")
-  #   end
-  # end
+      response = get('/albums/13')
+      expect(response.status).to eq(200)
+      expect(response.body).to include("Voyage")
+    end
+  end
 
   context "GET /artists" do
-    xit 'returns 200 OK' do
-      # Assuming the post with id 1 exists.
+    it 'returns 200 OK' do
       response = get('/artists')
       expected_response = 'Pixies, ABBA, Taylor Swift, Nina Simone, Kiasmos'
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq(expected_response)
+      expect(response.body).to include('<h1>Artists:</h1>')
+      expect(response.body).to include('Name: Pixies')
+      expect(response.body).to include('Artist Page')
+      expect(response.body).to include('Name: Taylor Swift')
     end
   end
 
   context "POST /artists" do
-    xit 'returns 200 OK' do
-      # Assuming the post with id 1 exists.
+    it 'returns 200 OK' do
       response = post('/artists', name: "Giveon", genre: "RnB")
 
       expect(response.status).to eq(200)
@@ -70,7 +60,7 @@ describe Application do
       response = get('/artists')
 
       expect(response.status).to eq(200)
-      expect(response.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone, Kiasmos, Giveon'
+      expect(response.body).to include 'Giveon'
     end
   end
 
@@ -91,6 +81,25 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include('<h1>Waterloo</h1>')
       expect(response.body).to include('Release year: 1974')
+    end
+  end
+
+  context "GET /artists/id" do
+    it 'returns 200 OK' do
+      # Assuming the post with id 1 exists.
+      response = get('/artists/2')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>ABBA</h1>')
+      expect(response.body).to include('Genre: Pop')
+    end
+
+    it 'returns 200 OK' do
+      response = get('artists/4')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Nina Simone</h1>')
+      expect(response.body).to include('Genre: Pop')
     end
   end
 end
